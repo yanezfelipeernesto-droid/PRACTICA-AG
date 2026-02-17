@@ -66,7 +66,7 @@ public class Agenda {
     }
 
     /**
-     * Busca un contacto por nombre y apellido.
+     * Busca un contacto por nombre y apellido
      */
     public void buscaContacto(String nombre, String apellido) {
         for (Contacto c : contactos) {
