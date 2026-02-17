@@ -1,6 +1,7 @@
 package agenda;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Agenda {
     private ArrayList<Contacto> contactos;
@@ -15,15 +16,38 @@ public class Agenda {
         this.contactos = new ArrayList<>();
     }
 
-    public void añadirContacto(Contacto c) {
+    /**
+     * Añade un nuevo contacto a la agenda.
+     *
+     * <p>El contacto se añade solo si:
+     * <ul>
+     *   <li>La agenda no está llena</li>
+     *   <li>No existe otro contacto con el mismo nombre y apellido</li>
+     * </ul>
+     *
+     * @param c El contacto a añadir (no debe ser null)
+     * @return true si el contacto se añadió correctamente, false en caso contrario
+     * @throws NullPointerException si el contacto es null
+     */
+    public boolean añadirContacto(Contacto c) {
+        // Validación de entrada
+        Objects.requireNonNull(c, "El contacto no puede ser null");
+
         if (agendaLlena()) {
-            System.out.println("La agenda está llena. No se puede añadir más contactos.");
-        } else if (existeContacto(c)) {
-            System.out.println("El contacto ya existe (mismo nombre y apellido).");
-        } else {
-            contactos.add(c);
-            System.out.println("Contacto añadido correctamente.");
+            System.out.println("La agenda está llena. Capacidad máxima: " + capacidad);
+            return false;
         }
+
+        if (existeContacto(c)) {
+            System.out.printf("El contacto '%s %s' ya existe.%n",
+                    c.getNombre(), c.getApellido());
+            return false;
+        }
+
+        contactos.add(c);
+        System.out.printf("Contacto '%s %s' añadido. Espacios libres: %d%n",
+                c.getNombre(), c.getApellido(), espaciosLibres());
+        return true;
     }
 
     public boolean existeContacto(Contacto c) {
